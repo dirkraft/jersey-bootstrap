@@ -1,0 +1,84 @@
+apply plugin: 'java'
+apply plugin: 'idea'
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'eu.appsatori:gradle-fatjar-plugin:0.2-rc1'
+    }
+
+}
+apply plugin: 'fatjar'
+
+
+// ∏ change to your group, and rename the root directory to something other than 'jersey-bootstrap'
+group = 'com.github.dirkraft'
+version = '0.0.0-SNAPSHOT'
+
+
+sourceSets {
+    main.resources.srcDir 'src/main/webapp'
+}
+
+
+configurations {
+    all {
+        resolutionStrategy.cacheDynamicVersionsFor 0, 'seconds'
+    }
+
+    // use commons-lang3 only
+    all*.exclude group: 'commons-lang', module:'commons-lang', version:'2.6'
+}
+
+
+repositories {
+    mavenCentral()
+}
+
+
+idea.project.languageLevel = 1.7
+
+
+dependencies {
+
+    // server components
+    compile 'com.sun.jersey:jersey-server:1.14'
+    compile 'com.sun.jersey:jersey-servlet:1.14'
+    compile 'com.sun.jersey:jersey-core:1.14'
+    compile 'com.sun.jersey:jersey-json:1.14'
+
+    // embedded jetty libs
+    compile 'org.eclipse.jetty:jetty-server:8.1.8.v20121106'
+    compile 'org.eclipse.jetty:jetty-webapp:8.1.8.v20121106'
+
+    compile 'org.codehaus.jackson:jackson-core-asl:1.9.11'
+    compile 'org.codehaus.jackson:jackson-mapper-asl:1.9.11'
+
+    // utility components
+    compile 'org.apache.commons:commons-lang3:3.1'
+    compile 'com.google.guava:guava:13.0.1'
+    compile 'com.github.rholder:guava-retrying:1.0.3'
+    compile 'com.github.dirkraft:props-live:1.0.1'
+
+    // logging components
+    compile 'ch.qos.logback:logback-classic:1.0.0'
+    compile 'ch.qos.logback:logback-core:1.0.0'
+
+    // test components
+    testCompile 'junit:junit:4.10'
+    testCompile 'org.mockito:mockito-core:1.9.0'
+}
+
+
+fatJar {
+    classifier = 'fat'
+    manifest {
+        def git_cmd = "git rev-parse HEAD"
+        def git_proc = git_cmd.execute()
+        attributes 'SCM-Revision': git_proc.text.trim()
+        attributes 'Timestamp': String.valueOf(System.currentTimeMillis())
+        attributes 'Build-Host': InetAddress.localHost.hostName
+        attributes 'Main-Class': 'com.github.dirkraft.atlas.AtlasApp'
+    }
+}
