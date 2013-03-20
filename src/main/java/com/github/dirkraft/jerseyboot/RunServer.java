@@ -1,6 +1,7 @@
 package com.github.dirkraft.jerseyboot;
 
 import com.github.dirkraft.jerseyboot.app.StaticResourceUTF8CharEncodingFilterHolder;
+import com.github.dirkraft.jerseyboot.base.BaseConfig;
 import com.github.dirkraft.jerseyboot.base.BasePackagesResourceConfig;
 import com.github.dirkraft.propslive.core.LivePropSet;
 import com.github.dirkraft.propslive.dynamic.listen.PropChange;
@@ -24,10 +25,11 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
-import static com.github.dirkraft.jerseyboot.base.JJConfig.$;
-import static com.github.dirkraft.jerseyboot.base.JJConfig.DEF_JETTY_PORT;
-import static com.github.dirkraft.jerseyboot.base.JJConfig.PROP_JETTY_PORT;
-import static com.github.dirkraft.jerseyboot.base.JJConfig.PROP_STATIC_DIRS;
+import static com.github.dirkraft.jerseyboot.base.BaseConfig.$;
+import static com.github.dirkraft.jerseyboot.base.BaseConfig.DEF_JETTY_PORT;
+import static com.github.dirkraft.jerseyboot.base.BaseConfig.PROP_JETTY_PORT;
+import static com.github.dirkraft.jerseyboot.base.BaseConfig.PROP_RESTART_TRIGGER;
+import static com.github.dirkraft.jerseyboot.base.BaseConfig.PROP_STATIC_DIRS;
 
 /**
  * Sets up Jetty and Jersey with some sane defaults
@@ -40,7 +42,18 @@ public class RunServer {
 
     public static Server SERVER;
 
-    private final LivePropSet propSet = new LivePropSet(PROP_STATIC_DIRS, PROP_JETTY_PORT) {
+    /**
+     * Through the 'props-live' library, atomically receives updates to all properties in the set:
+     * <ul>
+     *     <li>{@link BaseConfig#PROP_STATIC_DIRS}</li>
+     *     <li>{@link BaseConfig#PROP_JETTY_PORT}</li>
+     *     <li>{@link BaseConfig#PROP_RESTART_TRIGGER}</li>
+     * </ul>
+     *
+     * When a change is made to any of these properties, which directly affect the running Jetty instance, Jetty is
+     * restarted with the new settings.
+     */
+    private final LivePropSet propSet = new LivePropSet(PROP_STATIC_DIRS, PROP_JETTY_PORT, PROP_RESTART_TRIGGER) {
         {
             // Init with current values and subscribe to changes.
             $.to(this).getVals(this);
@@ -56,7 +69,9 @@ public class RunServer {
                 @Override
                 public void run() {
                     try {
-                        SERVER.stop(); // This will automatically recover and restart, which will look up the config fresh.
+                        // This will automatically recover and restart, which will look up fresh config.
+                        // accomplished by run() { while (!Thread.interrupted()) ...
+                        SERVER.stop();
                     } catch (Exception e) {
                         LOG.error("Critical error: Exception restarting the server.", e);
                     }
@@ -124,4 +139,7 @@ public class RunServer {
         }
     }
 
+    public static void main(String[] args) throws Exception {
+        new RunServer().run();
+    }
 }

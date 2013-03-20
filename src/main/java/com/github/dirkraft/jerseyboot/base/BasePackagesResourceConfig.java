@@ -2,26 +2,32 @@ package com.github.dirkraft.jerseyboot.base;
 
 import com.github.dirkraft.jerseyboot.RunServer;
 import com.github.dirkraft.jerseyboot.app.StartupListener;
+import com.github.dirkraft.jerseyboot.app.scan.JerseyScannerHelper;
 import com.github.dirkraft.jerseyboot.app.scan.NoopScannerHelper;
 import com.github.dirkraft.jerseyboot.app.scan.ScannerHelper;
+import com.sun.jersey.api.core.InjectParam;
 import com.sun.jersey.api.core.PackagesResourceConfig;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.eclipse.jetty.util.component.AbstractLifeCycle;
 import org.eclipse.jetty.util.component.LifeCycle;
 
+import javax.ws.rs.ApplicationPath;
+import javax.ws.rs.core.Context;
+
 /**
  * @author jason
  */
+@ApplicationPath("/*")
 public class BasePackagesResourceConfig extends PackagesResourceConfig {
 
-    public BasePackagesResourceConfig(String... basePkgs) {
-        this(new NoopScannerHelper(), basePkgs);
+    public BasePackagesResourceConfig(@InjectParam JerseyScannerHelper scannerHelper) {
+        this(scannerHelper, (String[]) null);
     }
 
     public BasePackagesResourceConfig(final ScannerHelper scannerHelper, String... basePkgs) {
         super(combine(new String[]{
                 "org.codehaus.jackson.jaxrs", // json serialization
-                JJConst.BASE_PKG // base components
+                BaseConst.BASE_PKG // base components
         }, basePkgs));
         // Support for initialization after context building but before serving requests.
         RunServer.SERVER.getHandler().addLifeCycleListener(new AbstractLifeCycle.AbstractLifeCycleListener() {
@@ -39,7 +45,7 @@ public class BasePackagesResourceConfig extends PackagesResourceConfig {
      * Last thing called by any constructor in this class.
      */
     protected void init() {
-        ToStringBuilder.setDefaultStyle(JJConst.DEFAULT_TO_STRING_STYLE);
+        ToStringBuilder.setDefaultStyle(BaseConst.DEFAULT_TO_STRING_STYLE);
     }
 
     protected static String[] combine(String pkg, String... moar) {

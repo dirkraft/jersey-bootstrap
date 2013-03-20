@@ -3,12 +3,12 @@ package com.github.dirkraft.jerseyboot.app.scan;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Sets;
-import com.sun.jersey.api.core.InjectParam;
 import com.sun.jersey.api.core.ResourceConfig;
 import com.sun.jersey.api.core.ResourceContext;
 import com.sun.jersey.core.spi.component.ProviderServices;
 import org.apache.commons.lang3.StringUtils;
 
+import javax.ws.rs.core.Context;
 import javax.ws.rs.ext.Provider;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -30,9 +30,9 @@ public class JerseyScannerHelper implements ScannerHelper {
     private final ResourceContext resourceContext;
     private final ProviderServices providerServices;
 
-    public JerseyScannerHelper(@InjectParam ResourceConfig resourceConfig,
-                               @InjectParam ResourceContext resourceContext,
-                               @InjectParam ProviderServices providerServices) {
+    public JerseyScannerHelper(@Context ResourceConfig resourceConfig,
+                               @Context ResourceContext resourceContext,
+                               @Context ProviderServices providerServices) {
         this.resourceConfig = resourceConfig;
         this.resourceContext = resourceContext;
         this.providerServices = providerServices;
