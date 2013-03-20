@@ -38,7 +38,9 @@ of the level, THEN you would add in the details, static meshes and whatnot.
     * **UTF-8** everything, as long as you make sure all your `@Path` classes extend `BaseJsonResource`. Uncaught exceptions are also generally converted into JSON.
  - **fat jar** build - gradle plugin to build an all-in-one runnable jar [(link)](https://github.com/musketyr/gradle-fatjar-plugin)
  - **JSP's disabled** - so you won't be tempted to use it or anything that depends on it, ever. If you want these, go away.
- - ** 
+ - Bonus! **DynamicPropsWeb.java** - a property management web resource which gives you an HTTP JSON means of inspecting and changing system properties. If nothing else, this is an
+   example web resource, and illustration of the [props-live](https://github.com/dirkraft/props-live) library (which I also wrote). Note that you can actually trigger
+   a restart of Jetty by changing any of the system properties to which Jetty is subscribed (see RunServer.propSet).
 
 
 #### You get the following browser-side things ####

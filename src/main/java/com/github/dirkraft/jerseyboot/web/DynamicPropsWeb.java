@@ -27,7 +27,7 @@ import static org.apache.commons.lang3.BooleanUtils.isTrue;
  * @author Jason Dunkelberger (dirkraft)
  */
 @Path("/_sys/props")
-public class DynamicPropsRes extends BaseJsonResource implements PropListener<String> {
+public class DynamicPropsWeb extends BaseJsonResource implements PropListener<String> {
 
     public static final String PROP_PROP_IGNORE_RGX = "jj.propres.ignore";
     public static final String DEF_PROP_IGNORE_RGX = "^(" +
@@ -46,11 +46,11 @@ public class DynamicPropsRes extends BaseJsonResource implements PropListener<St
         }
     };
 
-    public DynamicPropsRes() {
+    public DynamicPropsWeb() {
         this.internalPropKeysRgx = $.to(this).getString(PROP_PROP_IGNORE_RGX, DEF_PROP_IGNORE_RGX);
     }
 
-    public DynamicPropsRes(String internalPropKeysRgx) {
+    public DynamicPropsWeb(String internalPropKeysRgx) {
         this.internalPropKeysRgx = internalPropKeysRgx;
     }
 
