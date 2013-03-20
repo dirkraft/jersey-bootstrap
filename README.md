@@ -130,10 +130,10 @@ There are only two kinds of classes in the app:
 
 Each are known by many names, but in the scope of this jersey-bootstrap project they are respectively [[JSON HTTP Classes]](#json-http-classes) and [[Internal Service Classes]](#internal-service-classes).
 
-### JSON HTTP classes ###
+## JSON HTTP classes ##
 a.k.a. controllers, web resources, web endpoints, REST services, etc.
 
-#### class construction ####
+### class construction ###
 
 If you want something serialized to and from UTF-8 json, make your `@Path` annotated classes extend `BaseJsonResource`. Use `@InjectParam` for dependencies. jersey-bootstrap is set up to use a `SingletonFactory` in `RunServer`when doing DI, so that you never end up with more than one instance of any resource. Example
 
