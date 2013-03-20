@@ -50,7 +50,7 @@ that you stole this code.
  - delete the two `placeholder` files in src/test/java and src/test/resources
  - TODO documentation
 
-Then you'll want to decide what you want to keep and lose. The [File Matrix](#file-matrix) section at the bottom may help this this.
+Then you'll want to decide what you want to keep and lose. The [File Matrix](#file-matrix) section may help with this.
 
 Once that's all done, you'll want to quit IntelliJ and run yourself one final `gradle idea` before making Exodus of
 this README.md (delete it or replace it with your own). Stealing code has never been so easy!
@@ -119,3 +119,9 @@ specifically labelled was originally written by me, though you might never know 
         │       └── robots.txt  -------------------------------- HTML5 boilerplate
         └── test
             └── ...  ------------------------------------------- (omitted for brevity)
+
+
+
+As a developer
+--------------
+(I tire of the Agile methodology) I configure my IDE with useful settings.
