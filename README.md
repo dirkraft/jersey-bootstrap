@@ -49,7 +49,8 @@ of the level, THEN you would add in the details, static meshes and whatnot.
  - **HTML5 Boilerplate v4.1.0** - All I did was dump the files in, but there you go.
    [HTML5 boilerplate](http://html5boilerplate.com/)
 
-Refer to the [[File Matrix section]](#file-matrix) in particular to determine what to do about static files included from these sources.
+Refer to the [[File Matrix section]](#file-matrix) and each external source's site and documentation to act upon said
+resources.
 
 
 
@@ -66,8 +67,9 @@ that you stole this code.
  3. delete the two `placeholder` files in src/test/java and src/test/resources
  4. package structure - move everything from 'com/github/dirkraft/jerseyboot' to 'com/mega/corp/imaedthismyslef'
 
-Then you'll want to decide what you want to keep and lose, and make plans to replace any such placeholders.
-The [[File Matrix section]](#file-matrix) may help with this, particularly with respect to HTML5 boilerplate.
+Then you'll want to decide what you want to keep, lose, or modify from the various static resources sources, and make
+plans to replace any such placeholders. The [[File Matrix section]](#file-matrix) may help with this. Refer to each's
+own site and documentation for details.
 
 Once that's all done, you'll want to quit IntelliJ and run yourself one final `gradle idea` before making Exodus of
 this README.md (delete it or replace it with your own). Stealing code has never been so easy!
