@@ -43,9 +43,8 @@ of the level, THEN you would add in the details, static meshes and whatnot.
 #### You get the following browser-side things ####
 
  - **bootstrap.css v2.2.2** - the one and only [Twitter Bootstrap](http://twitter.github.com/bootstrap/)
- - **font-awesome.css** - is awesome because the icons are just font characters, and so can be colored or displayed at any
-                        size. [font-awesome](http://fortawesome.github.com/Font-Awesome/) I just noticed the url is
-                        FORTawesome.
+ - **font-awesome.css v3.0.2** - is awesome because the icons are just font characters, and so can be colored or displayed at any
+                        size. [(link)](http://fortawesome.github.com/Font-Awesome/)
  - **jQuery v1.8.3** - If you don't know what this is... I don't even know what they would do to you. [Them.](http://cl.jroo.me/z3/U/C/k/e/a.baa-Them-Kittens.jpg)
  - **HTML5 Boilerplate v4.1.0** - All I did was dump the files in, but there you go.
    [HTML5 boilerplate](http://html5boilerplate.com/)
@@ -189,7 +188,9 @@ specifically labelled was originally written by me, though you might never know 
         │       │   ├── base.css
         │       │   ├── bootstrap.css  ------------------------- bootstrap
         │       │   ├── bootstrap.min.css  --------------------- bootstrap
+        │       │   ├── font-awesome-ie7.min.css  -------------- font-awesome
         │       │   ├── font-awesome.css  ---------------------- font-awesome
+        │       │   ├── font-awesome.min.css  ------------------ font-awesome
         │       │   ├── main.css  ------------------------------ HTML5 boilerplate
         │       │   └── normalize.css  ------------------------- HTML5 boilerplate
         │       ├── doc
