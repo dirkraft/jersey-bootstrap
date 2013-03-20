@@ -7,9 +7,9 @@ web application is of the smaller varieties of fun. *This repo itself is not a n
 
 I apologize for using the F-word (f----work). It will not happen again.
 
+
+
 * * * * * *
-
-
 
 
 
@@ -35,9 +35,10 @@ of the level, THEN you would add in the details, static meshes and whatnot.
       + more on `-Dbase.static_dirs` under [[As a developer...]](#as-a-developer)
     * Basic [**DI/IoC**](http://en.wikipedia.org/wiki/Inversion_of_control). All resources (classes annotated `@Provider`, `@Path`, others...) are singletons. DI via `@InjectParam` annotated arguments.
     * **Jackson json** serialization. Check out `DefaultObjectMapper` for Jackson config.
-    * **UTF-8** everything. As long as you make sure all your `@Path` classes extend `BaseJsonResource`
+    * **UTF-8** everything, as long as you make sure all your `@Path` classes extend `BaseJsonResource`. Uncaught exceptions are also generally converted into JSON.
  - **fat jar** build - gradle plugin to build an all-in-one runnable jar [(link)](https://github.com/musketyr/gradle-fatjar-plugin)
  - **JSP's disabled** - so you won't be tempted to use it or anything that depends on it, ever. If you want these, go away.
+ - ** 
 
 
 #### You get the following browser-side things ####
@@ -59,8 +60,8 @@ resources.
 Bootstrappin'
 -------------
 Pretty much you'll want to do a full project text search for ∏ (that's capital π). Anywhere that character appears
-is something that you'll want to change to Make It Yours (including this README.md)! These are the minimum required to erase all significant traces
-that you stole this code.
+is something that you'll want to change to Make It Yours (including this README.md)! These are the minimum required to
+erase all significant traces that you stole this code, specifically, from me.
 
  1. root directory - rename from 'jersey-bootstrap'
  2. `build.gradle` - group name
@@ -72,7 +73,8 @@ plans to replace any such placeholders. The [[File Matrix section]](#file-matrix
 own site and documentation for details.
 
 Once that's all done, you'll want to quit IntelliJ and run yourself one final `gradle idea` before making Exodus of
-this README.md (delete it or replace it with your own). Stealing code has never been so easy!
+this README.md (delete it or replace it with your own). Stealing code has never been so easy! Don't feel bad, I'm pretty
+sure I just stole all of this from someone else. Pay it forward.
 
 
 
@@ -85,10 +87,12 @@ DWTFYW with this file (like deleting it) if you don't want your derivative work 
 
 
 
+* * * * * * * * * 
+
 
 
 As a developer...
------------------
+=================
 (I tire of the Agile methodology) I configure my IDE with useful settings.
 
 
@@ -104,12 +108,57 @@ As a developer...
 
  2. run or debug `RunServer.main` with that system property. `-Dbase.static_dirs` is normally only useful for development.
 
-- - - - - - -
 
-### Usage ###
-If you want something serialized to and from UTF-8 json, make your `@Path` annotated classes extend `BaseJsonResource`.
 
-Check out `DefaultObjectMapper` for the Jackson serialization config, and modify as necessary. As that configuration stands, I personally adopted a pattern such as this, where I create dumb POJOs for request and response serialization:
+Development Tips
+----------------
+This entire section outlines development strategies and paradigms that I have found effective in keeping things simple. I have found that I can fit all of my own needs into these constraints and thus benefit from the assumptions and commonalities provided by this bootstrapping project. If any of the contained developmental conventions are unacceptable to you, then you may discard them at will. But realize that jersey-bootstrap exists as a jumpstart to an application to these ends.
+
+In summary, the points are:
+ - `@Path` annotates HTTP JSON classes which should extend `BaseJsonResource`
+ - `@Provider` annotates Internal Service Classes
+ - inject dependencies through `@InjectParam`-annotated constructor args
+   * neither circular dependency injection nor implicit argument types are supported by Jersey's simple DI mechanism
+
+
+- - - - - - - -
+
+There are only two kinds of classes in the app:
+
+ - those that face the world, and
+ - those that don't.
+
+Each are known by many names, but in the scope of this jersey-bootstrap project they are respectively [[JSON HTTP Classes]](#json-http-classes) and [[Internal Service Classes]](#internal-service-classes).
+
+### JSON HTTP classes ###
+a.k.a. controllers, web resources, web endpoints, REST services, etc.
+
+#### class construction ####
+
+If you want something serialized to and from UTF-8 json, make your `@Path` annotated classes extend `BaseJsonResource`. Use `@InjectParam` for dependencies. jersey-bootstrap is set up to use a `SingletonFactory` in `RunServer`when doing DI, so that you never end up with more than one instance of any resource. Example
+
+    @Path("/sardines")
+    public class SardinesWeb extends BaseJsonResource {
+        
+        private final SardinesService sardinesService;
+        
+        public SardinesWeb(@InjectParam SardinesService sardinesService) {
+            this.sardinesService = sardinesService;
+        }
+        
+        @Path("count")
+        public int countSardines() {
+            return sardineService.getTotalSardines();
+        }
+        
+        @Path("{id}")
+        public Sardine getSardine(@PathParam("id") String id) {
+            return sardineService.findById(id);
+        }
+    }
+
+
+Check out `DefaultObjectMapper` for the Jackson serialization config, and modify if necessary though I encourage you to leave it as is. As that configuration stands, one way you might deal with requests and responses might be with simple POJOs like so...
 
 #### sample request deserialization ####
     
@@ -138,6 +187,31 @@ serializes back to a browser as
         "results": [],
         "numResults": 0
     }
+
+
+## Internal Service Classes ##
+a.k.a. service beans, DAO classes, resources, providers, etc.
+
+### class construction ###
+
+Annotate classes with `@Provider` that are not going to be serving JSON HTTP requests. The following example assumes something like a three-tiered architecture (controllers, services, DAOs), but is strictly for illustration.
+
+    @Provider
+    public class SardinesService {
+        
+        private final SardineDao sardineDao;
+        
+        public SardinesService(@InjectParam SardineDaoRedis sardineDaoRedis) {
+            // Assume SardineDaoRedis is a redis implementation of SardineDao interface.
+            // Caution that jersey's built-in DI mechanic would not be able to resolve
+            // that there is one implementor of SardineDao. So the constructor argument here
+            // explicitly types to SardineDaoRedis.
+            this.sardineDao = sardineDao;
+        }
+    }
+
+Note that jersey's built-in dependency injection mechanic is primitive and does not support
+circular dependency injection like Spring.
 
 - - - - - - - - - -
 
