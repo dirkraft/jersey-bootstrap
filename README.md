@@ -50,7 +50,7 @@ that you stole this code.
  - delete the two `placeholder` files in src/test/java and src/test/resources
  - TODO documentation
 
-Then you'll want to decide what you want to keep and lose. The *File Matrix* section at the bottom may help this this.
+Then you'll want to decide what you want to keep and lose. The [File Matrix](#file-matrix) section at the bottom may help this this.
 
 Once that's all done, you'll want to quit IntelliJ and run yourself one final `gradle idea` before making Exodus of
 this README.md (delete it or replace it with your own). Stealing code has never been so easy!
