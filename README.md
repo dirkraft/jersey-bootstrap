@@ -129,8 +129,8 @@ specifically labelled was originally written by me, though you might never know 
 
 
 
-As a developer
---------------
+As a developer...
+-----------------
 (I tire of the Agile methodology) I configure my IDE with useful settings.
 
 
