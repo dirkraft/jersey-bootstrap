@@ -31,13 +31,13 @@ of the level, THEN you would add in the details, static meshes and whatnot.
 
  - **Jetty server** - [(link)](http://jetty.codehaus.org/jetty/)
  - **Jersey** - [(link)](http://jersey.java.net/) set up to enable the following. It may be useful to examine `RunServer.run()` at how Jetty and Jersey are configured from the get-go.
-    * Serves up embedded or external static resources. URLs match jersey resources (controllers, REST endpoints, ...) first. If there is not one, falls back to static resources.
+    * Serves up **embedded or external static resources**. URLs match jersey resources (controllers, REST endpoints, ...) first. If there is not one, falls back to static resources.
       + more on `-Dbase.static_dirs` under [[As a developer...]](#as-a-developer)
-    * Basic [DI/IoC](http://en.wikipedia.org/wiki/Inversion_of_control). All resources (classes annotated `@Provider`, `@Path`, others...) are singletons. DI via `@InjectParam` annotated arguments.
-    * Jackson json serialization. Check out `DefaultObjectMapper` for configuration of Jackson.
-    * UTF-8 everything. As long as you make sure all your `@Path` classes extend `BaseJsonResource`
- - [fat jar](https://github.com/musketyr/gradle-fatjar-plugin) build - all-in-one runnable jar
- - JSP's disabled - so you won't be tempted to use it or anything that depends on it, ever. If you want these, go away.
+    * Basic [**DI/IoC**](http://en.wikipedia.org/wiki/Inversion_of_control). All resources (classes annotated `@Provider`, `@Path`, others...) are singletons. DI via `@InjectParam` annotated arguments.
+    * **Jackson json** serialization. Check out `DefaultObjectMapper` for Jackson config.
+    * **UTF-8** everything. As long as you make sure all your `@Path` classes extend `BaseJsonResource`
+ - **fat jar** build - gradle plugin to build an all-in-one runnable jar [(link)](https://github.com/musketyr/gradle-fatjar-plugin)
+ - **JSP's disabled** - so you won't be tempted to use it or anything that depends on it, ever. If you want these, go away.
 
 
 #### You get the following browser-side things ####
@@ -49,6 +49,8 @@ of the level, THEN you would add in the details, static meshes and whatnot.
  - **jQuery v1.8.3** - If you don't know what this is... I don't even know what they would do to you. [Them.](http://cl.jroo.me/z3/U/C/k/e/a.baa-Them-Kittens.jpg)
  - **HTML5 Boilerplate v4.1.0** - All I did was dump the files in, but there you go.
    [HTML5 boilerplate](http://html5boilerplate.com/)
+
+Refer to the [[File Matrix section]](#file-matrix) in particular to determine what to do about static files included from these sources.
 
 
 
@@ -66,7 +68,7 @@ that you stole this code.
  4. package structure - move everything from 'com/github/dirkraft/jerseyboot' to 'com/mega/corp/imaedthismyslef'
 
 Then you'll want to decide what you want to keep and lose, and make plans to replace any such placeholders.
-The [File Matrix](#file-matrix) section may help with this, particularly with respect to HTML5 boilerplate.
+The [[File Matrix section]](#file-matrix) may help with this, particularly with respect to HTML5 boilerplate.
 
 Once that's all done, you'll want to quit IntelliJ and run yourself one final `gradle idea` before making Exodus of
 this README.md (delete it or replace it with your own). Stealing code has never been so easy!
