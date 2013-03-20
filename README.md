@@ -26,16 +26,21 @@ age) was blown away by the seemingly upside-down concept of the level editor: yo
 world; you carve out rooms (*subtract*) from an entirely solid world. After subtracting out space for the general flow
 of the level, THEN you would add in the details, static meshes and whatnot.
 
-You get the following server-side things:
+
+#### You get the following server-side things ####
 
  - **Jetty server** - [(link)](http://jetty.codehaus.org/jetty/)
- - **Jersey** - [(link)](http://jersey.java.net/) set up to enable the following...
+ - **Jersey** - [(link)](http://jersey.java.net/) set up to enable the following. It may be useful to examine `RunServer.run()` at how Jetty and Jersey are configured from the get-go.
     * Serves up embedded or external static resources. URLs match jersey resources (controllers, REST endpoints, ...) first. If there is not one, falls back to static resources.
-      + more on `-Dbase.static_dirs` under [As a developer...](#as-a-developer)
+      + more on `-Dbase.static_dirs` under [[As a developer...]](#as-a-developer)
+    * Basic [DI/IoC](http://en.wikipedia.org/wiki/Inversion_of_control). All resources (classes annotated `@Provider`, `@Path`, others...) are singletons. DI via `@InjectParam` annotated arguments.
+    * Jackson json serialization. Check out `DefaultObjectMapper` for configuration of Jackson.
+    * UTF-8 everything. As long as you make sure all your `@Path` classes extend `BaseJsonResource`
  - [fat jar](https://github.com/musketyr/gradle-fatjar-plugin) build - all-in-one runnable jar
- - TODO documentation
+ - JSP's disabled - so you won't be tempted to use it or anything that depends on it, ever. If you want these, go away.
 
-You get the following browser-side things:
+
+#### You get the following browser-side things ####
 
  - **bootstrap.css v2.2.2** - the one and only [Twitter Bootstrap](http://twitter.github.com/bootstrap/)
  - **font-awesome.css** - is awesome because the icons are just font characters, and so can be colored or displayed at any
@@ -96,14 +101,49 @@ As a developer...
 
  2. run or debug `RunServer.main` with that system property. `-Dbase.static_dirs` is normally only useful for development.
 
+- - - - - - -
+
+### Usage ###
+If you want something serialized to and from UTF-8 json, make your `@Path` annotated classes extend `BaseJsonResource`.
+
+Check out `DefaultObjectMapper` for the Jackson serialization config, and modify as necessary. As that configuration stands, I personally adopted a pattern such as this, where I create dumb POJOs for request and response serialization:
+
+#### sample request deserialization ####
+    
+    {
+        "searchTerms": "neon bananas",
+        "maxResultSetSize" : 10
+    }
+
+deserializes from a browser into
+
+    class ThingReq {
+        public String searchTerms; // == "neon bananas"
+        public Integer maxResultSetSize; // == 10
+    }
+
+#### sample response serialization ####
+    
+    class SearchSummaryRes {
+        public List<SearchResultRes> results; // == empty list
+        public Integer numResults; // == 0
+    }
+
+serializes back to a browser as
+
+    {
+        "results": [],
+        "numResults": 0
+    }
+
+- - - - - - - - - -
 
 ### Hot Coding ###
 What have you done with my hot coding?
 
 #### Static "hot coding" ####
 In development (a.k.a. IntelliJ), static resources serve directly from the filesystem per the default location
-`classpath:static/` or the value of `-Dbase.static_dirs`. IntelliJ actually copies all the static files to a temporary
-build dir (called something like 'out/'). If you do not set `-Dbase.static_dirs`, then you will likely have trouble live editing static files.
+`classpath:static/` or the value of `-Dbase.static_dirs`. IntelliJ actually copies all the static files to a temporary build dir (called something like 'out/'). If you do not set `Dbase.static_dirs`, then you will likely have trouble live editing static files.
 
 #### Java hot coding ####
 A lot of Javanese are accustomed to being able to hot code stack frame-scoped changes. What they may not have realized is
