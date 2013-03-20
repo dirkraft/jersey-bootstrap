@@ -7,9 +7,11 @@ web application is of the smaller varieties of fun. *This repo itself is not a n
 
 I apologize for using the F-word (f----work). It will not happen again.
 
-
-
 * * * * * *
+
+
+
+
 
 "Features"
 ----------
@@ -45,6 +47,8 @@ You get the following browser-side things:
 
 
 
+
+
 Bootstrappin'
 -------------
 Pretty much you'll want to do a full project text search for ∏ (that's capital π). Anywhere that character appears
@@ -64,10 +68,52 @@ this README.md (delete it or replace it with your own). Stealing code has never 
 
 
 
+
+
 License
 -------
 Jersey Bootstrap is licensed under WTFPL v2. A copy is available in the project, [WTFPL.txt](WTFPL.txt). You should
 DWTFYW with this file (like deleting it) if you don't want your derivative work to be subject to the same license.
+
+
+
+
+
+As a developer...
+-----------------
+(I tire of the Agile methodology) I configure my IDE with useful settings.
+
+
+### Running/Debugging the App ###
+
+ 1. determine the value for `-Dbase.static_dirs`
+   * in a single web module project structure, just
+
+            -Dbase.static_dirs=src/main/webapp/static/
+   * in a multi-module web module project structure first-one-wins order of static directories, e.g.
+
+            -Dbase.static_dirs=src/main/webapp/static/;../base-webapp/src/main/webapp/static/
+
+ 2. run or debug `RunServer.main` with that system property. `-Dbase.static_dirs` is normally only useful for development.
+
+
+### Hot Coding ###
+What have you done with my hot coding?
+
+#### Static "hot coding" ####
+In development (a.k.a. IntelliJ), static resources serve directly from the filesystem per the default location
+`classpath:static/` or the value of `-Dbase.static_dirs`. IntelliJ actually copies all the static files to a temporary
+build dir (called something like 'out/'). If you do not set `-Dbase.static_dirs`, then you will likely have trouble live editing static files.
+
+#### Java hot coding ####
+A lot of Javanese are accustomed to being able to hot code stack frame-scoped changes. What they may not have realized is
+that these are features not inherently available in any 'debugging' jvm instance. Most of us have likely been able to
+hot code through various servlet containers like JBoss or Tomcat. Outside of servlet containers there's the reputedly
+very good [JRebel](http://zeroturnaround.com/software/jrebel/) which apparently has strong IntelliJ support. In short,
+since this isn't a WAR, and if you don't have JRebel, then you won't be able to hotcode. This has not been a problem
+for me, because restarting the app takes about 3 seconds.
+
+
 
 
 
@@ -128,39 +174,6 @@ specifically labelled was originally written by me, though you might never know 
             └── ...  ------------------------------------------- (omitted for brevity)
 
 
-
-As a developer...
------------------
-(I tire of the Agile methodology) I configure my IDE with useful settings.
-
-
-### Running/Debugging the App ###
-
- 1. determine the value for `-Dbase.static_dirs`
-   * in a single web module project structure, just
-
-            -Dbase.static_dirs=src/main/webapp/static/
-   * in a multi-module web module project structure first-one-wins order of static directories, e.g.
-
-            -Dbase.static_dirs=src/main/webapp/static/;../base-webapp/src/main/webapp/static/
-
- 2. run or debug `RunServer.main` with that system property. `-Dbase.static_dirs` is normally only useful for development.
-
-
-### Hot Coding ###
-What have you done with my hot coding?
-
-#### Static "hot coding" ####
-In development (a.k.a. IntelliJ), static resources serve directly from the filesystem per the default location
-`classpath:static/` or the value of `-Dbase.static_dirs`. IntelliJ actually copies all the static files to a temporary build dir (called something like 'out/'). If you do not set `Dbase.static_dirs`, then you will likely have trouble live editing static files.
-
-#### Java hot coding ####
-A lot of Javanese are accustomed to being able to hot code stack frame-scoped changes. What they may not have realized is
-that these are features not inherently available in any 'debugging' jvm instance. Most of us have likely been able to
-hot code through various servlet containers like JBoss or Tomcat. Outside of servlet containers there's the reputedly
-very good [JRebel](http://zeroturnaround.com/software/jrebel/) which apparently has strong IntelliJ support. In short,
-since this isn't a WAR, and if you don't have JRebel, then you won't be able to hotcode. This has not been a problem
-for me, because restarting the app takes about 3 seconds.
 
 
 
