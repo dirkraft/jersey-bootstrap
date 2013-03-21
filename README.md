@@ -54,8 +54,8 @@ of the level, THEN you would add in the details, static meshes and whatnot.
  - **font-awesome.css v3.0.2** - is awesome because the icons are just font characters, and so can be colored or displayed at any
                         size. [(link)](http://fortawesome.github.com/Font-Awesome/)
  - **jQuery v1.8.3** - If you don't know what this is... I don't even know what they would do to you. [Them.](http://cl.jroo.me/z3/U/C/k/e/a.baa-Them-Kittens.jpg)
- - **HTML5 Boilerplate v4.1.0** - All I did was dump the files in, but there you go.
-   [HTML5 boilerplate](http://html5boilerplate.com/)
+ - parts of **HTML5 Boilerplate v4.1.0** - I included a few files from [HTML5 boilerplate](http://html5boilerplate.com/).
+   Dumping the whole thing into the static file structure makes it feel messy before you've even started.
 
 Refer to the [[File Matrix section]](#file-matrix) and each external source's site and documentation to act upon said
 resources.
@@ -296,12 +296,6 @@ specifically labelled was originally written by me, though you might never know 
         │   │   └── webdefault-nojsp.xml
         │   └── webapp
         │       ├── 404.html  ---------------------------------- HTML5 boilerplate
-        │       ├── apple-touch-icon-114x114-precomposed.png  -- HTML5 boilerplate
-        │       ├── apple-touch-icon-144x144-precomposed.png  -- HTML5 boilerplate
-        │       ├── apple-touch-icon-57x57-precomposed.png  ---- HTML5 boilerplate
-        │       ├── apple-touch-icon-72x72-precomposed.png  ---- HTML5 boilerplate
-        │       ├── apple-touch-icon-precomposed.png  ---------- HTML5 boilerplate
-        │       ├── apple-touch-icon.png  ---------------------- HTML5 boilerplate
         │       ├── crossdomain.xml  --------------------------- HTML5 boilerplate
         │       ├── css
         │       │   ├── base.css
