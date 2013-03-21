@@ -113,7 +113,7 @@ public class RunServer {
             FilterHolder jerseyFilter = new FilterHolder(ServletContainer.class);
             jerseyFilter.setName(prcCls.getName());
             jerseyFilter.setInitParameter(ServletContainer.APPLICATION_CONFIG_CLASS, prcCls.getCanonicalName());
-            jerseyFilter.setInitParameter(ServletContainer.PROPERTY_WEB_PAGE_CONTENT_REGEX, ".*\\.(html|css|js|eot|svg|ttf|woff)");
+            jerseyFilter.setInitParameter(ServletContainer.PROPERTY_WEB_PAGE_CONTENT_REGEX, ".*\\.(html|css|js|gif|jpg|png|ico|eot|svg|ttf|woff|otf)");
             jerseyFilter.setInitParameter(ResourceConfig.PROPERTY_DEFAULT_RESOURCE_COMPONENT_PROVIDER_FACTORY_CLASS, SingletonFactory.class.getCanonicalName());
             jerseyFilter.setInitParameter(ResourceConfig.FEATURE_DISABLE_WADL, "true");
             jerseyFilter.setInitParameter(JSONConfiguration.FEATURE_POJO_MAPPING, "true");

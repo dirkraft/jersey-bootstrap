@@ -312,8 +312,6 @@ specifically labelled was originally written by me, though you might never know 
         │       │   ├── font-awesome.min.css  ------------------ font-awesome
         │       │   ├── main.css  ------------------------------ HTML5 boilerplate
         │       │   └── normalize.css  ------------------------- HTML5 boilerplate
-        │       ├── doc
-        │       │   └── ...  ----------------------------------- HTML5 boilerplate
         │       ├── favicon.ico  ------------------------------- HTML5 boilerplate
         │       ├── font
         │       │   └── ...  ----------------------------------- font-awesome
