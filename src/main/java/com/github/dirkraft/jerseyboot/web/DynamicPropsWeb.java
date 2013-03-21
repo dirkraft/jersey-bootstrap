@@ -1,5 +1,6 @@
 package com.github.dirkraft.jerseyboot.web;
 
+import com.github.dirkraft.jerseyboot.base.BaseConfig;
 import com.github.dirkraft.jerseyboot.base.BaseJsonResource;
 import com.github.dirkraft.propslive.dynamic.listen.PropChange;
 import com.github.dirkraft.propslive.dynamic.listen.PropListener;
@@ -7,7 +8,6 @@ import com.github.dirkraft.propslive.set.ease.PropSetAsMap;
 import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
 import com.google.common.collect.Maps;
-import org.apache.commons.lang3.concurrent.BasicThreadFactory;
 
 import javax.annotation.Nullable;
 import javax.ws.rs.GET;
@@ -15,8 +15,7 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.QueryParam;
 import java.util.Map;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.TreeMap;
 
 import static com.github.dirkraft.jerseyboot.base.BaseConfig.$;
 import static org.apache.commons.lang3.BooleanUtils.isTrue;
@@ -29,14 +28,19 @@ import static org.apache.commons.lang3.BooleanUtils.isTrue;
 @Path("/_sys/props")
 public class DynamicPropsWeb extends BaseJsonResource implements PropListener<String> {
 
-    public static final String PROP_PROP_IGNORE_RGX = "jj.propres.ignore";
+    /**
+     * System property that gives regex of properties to exclude from {@link #getProps(Boolean)} when passed
+     * <code>false</code>. Defaults to <code>{@value #DEF_PROP_IGNORE_RGX}</code>.
+     */
+    public static final String PROP_PROP_IGNORE_RGX = "base.web.props.ignore";
     public static final String DEF_PROP_IGNORE_RGX = "^(" +
             "((awt|file|ftp|http|idea|java|line|os|path|sun|user)\\.)" +
             "|gopherProxySet|socksNonProxyHosts" +
             ").*$";
-
-    private final ExecutorService asyncConfigChangeService = Executors.newCachedThreadPool(new BasicThreadFactory.Builder()
-            .build());
+    static {
+        // make the default visible in the config
+        BaseConfig.DEFAULTS.setString(PROP_PROP_IGNORE_RGX, DEF_PROP_IGNORE_RGX);
+    }
 
     String internalPropKeysRgx;
     final Predicate<String> notInternalPropKeys = new Predicate<String>() {
@@ -59,7 +63,7 @@ public class DynamicPropsWeb extends BaseJsonResource implements PropListener<St
      */
     @GET
     public Map<String, String> getProps(@QueryParam(value = "showInternal") Boolean showInternal) {
-        return Maps.filterKeys($.asMap(), isTrue(showInternal) ? Predicates.<String>alwaysTrue() : notInternalPropKeys);
+        return new TreeMap<>(Maps.filterKeys($.asMap(), isTrue(showInternal) ? Predicates.<String>alwaysTrue() : notInternalPropKeys));
     }
 
     /**

@@ -3,6 +3,7 @@ package com.github.dirkraft.jerseyboot.base;
 import com.github.dirkraft.propslive.Props;
 import com.github.dirkraft.propslive.PropsImpl;
 import com.github.dirkraft.propslive.dynamic.DynamicPropsSets;
+import com.github.dirkraft.propslive.propsrc.PropSource;
 import com.github.dirkraft.propslive.propsrc.PropSourceMap;
 import com.github.dirkraft.propslive.propsrc.PropSourceSysProps;
 import com.github.dirkraft.propslive.propsrc.view.LayeredPropSource;
@@ -13,7 +14,12 @@ import org.eclipse.jetty.util.resource.ResourceCollection;
  */
 public class BaseConfig {
 
-    private static final Props DEFAULTS = new PropsImpl(new PropSourceMap("default prop values"));
+    /** Sort of a registry of default valueS */
+    public static final Props DEFAULTS = new PropsImpl(new PropSourceMap("default prop values"));
+    /**
+     * The primary property lookup source. First checks system properties. If not found falls back to registered
+     * {@link #DEFAULTS}.
+     */
     public static final DynamicPropsSets $ = new DynamicPropsSets(new LayeredPropSource(
             new PropSourceSysProps(), // first check sys props
             DEFAULTS // fall back to coded defaults

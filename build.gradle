@@ -59,7 +59,7 @@ dependencies {
     compile 'org.apache.commons:commons-lang3:3.1'
     compile 'com.google.guava:guava:13.0.1'
     compile 'com.github.rholder:guava-retrying:1.0.3'
-    compile 'com.github.dirkraft:props-live:1.0.1'
+    compile 'com.github.dirkraft:props-live:1.0.2'
 
     // logging components
     compile 'ch.qos.logback:logback-classic:1.0.0'
@@ -79,6 +79,10 @@ fatJar {
         attributes 'SCM-Revision': git_proc.text.trim()
         attributes 'Timestamp': String.valueOf(System.currentTimeMillis())
         attributes 'Build-Host': InetAddress.localHost.hostName
-        attributes 'Main-Class': 'com.github.dirkraft.atlas.AtlasApp'
+        // ∏ align the main class location
+        attributes 'Main-Class': 'com.github.dirkraft.jerseyboot.RunServer'
     }
+    exclude 'META-INF/*.SF'
+    exclude 'META-INF/*.DSA'
+    exclude 'META-INF/*.RSA'
 }

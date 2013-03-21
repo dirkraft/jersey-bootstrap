@@ -3,8 +3,8 @@ package com.github.dirkraft.jerseyboot.base;
 import com.github.dirkraft.jerseyboot.RunServer;
 import com.github.dirkraft.jerseyboot.app.StartupListener;
 import com.github.dirkraft.jerseyboot.app.scan.JerseyScannerHelper;
-import com.github.dirkraft.jerseyboot.app.scan.NoopScannerHelper;
 import com.github.dirkraft.jerseyboot.app.scan.ScannerHelper;
+import com.github.dirkraft.propslive.set.ease.PropSetAsMap;
 import com.sun.jersey.api.core.InjectParam;
 import com.sun.jersey.api.core.PackagesResourceConfig;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -12,7 +12,9 @@ import org.eclipse.jetty.util.component.AbstractLifeCycle;
 import org.eclipse.jetty.util.component.LifeCycle;
 
 import javax.ws.rs.ApplicationPath;
-import javax.ws.rs.core.Context;
+
+import static com.github.dirkraft.jerseyboot.base.BaseConfig.$;
+import static com.github.dirkraft.jerseyboot.base.BaseConfig.DEFAULTS;
 
 /**
  * @author jason

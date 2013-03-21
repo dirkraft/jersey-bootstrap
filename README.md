@@ -1,3 +1,8 @@
+WORK IN PROGRESS
+================
+Not yet ready for primetime.
+
+
 Jersey Bootstrap
 ================
 also known as "Texas Bootstrap" and "Double Bootstrap Rainbow".
@@ -29,7 +34,7 @@ of the level, THEN you would add in the details, static meshes and whatnot.
 
 #### You get the following server-side things ####
 
- - **Jetty server** - [(link)](http://jetty.codehaus.org/jetty/)
+ - **Jetty server** - [(link)](http://jetty.codehaus.org/jetty/) embedded into the fat jar build
  - **Jersey** - [(link)](http://jersey.java.net/) set up to enable the following. It may be useful to examine `RunServer.run()` at how Jetty and Jersey are configured from the get-go.
     * Serves up **embedded or external static resources**. URLs match jersey resources (controllers, REST endpoints, ...) first. If there is not one, falls back to static resources.
       + more on `-Dbase.static_dirs` under [[As a developer...]](#as-a-developer)
@@ -66,7 +71,7 @@ is something that you'll want to change to Make It Yours (including this README.
 erase all significant traces that you stole this code, specifically, from me.
 
  1. root directory - rename from 'jersey-bootstrap'
- 2. `build.gradle` - group name
+ 2. `build.gradle` - group name and fatJar Main-Class location
  3. delete the two `placeholder` files in src/test/java and src/test/resources
  4. package structure - move everything from 'com/github/dirkraft/jerseyboot' to 'com/mega/corp/imaedthismyslef'
 
@@ -121,6 +126,7 @@ In summary, the points are:
  - `@Provider` annotates Internal Service Classes
  - inject dependencies through `@InjectParam`-annotated constructor args
    * neither circular dependency injection nor implicit argument types are supported by Jersey's simple DI mechanism
+ - Use system properties for all configurable elements.
 
 
 - - - - - - - -
@@ -132,10 +138,10 @@ There are only two kinds of classes in the app:
 
 Each are known by many names, but in the scope of this jersey-bootstrap project they are respectively [[JSON HTTP Classes]](#json-http-classes) and [[Internal Service Classes]](#internal-service-classes).
 
-## JSON HTTP classes ##
+### JSON HTTP classes ###
 a.k.a. controllers, web resources, web endpoints, REST services, etc.
 
-### class construction ###
+#### class construction ####
 
 If you want something serialized to and from UTF-8 json, make your `@Path` annotated classes extend `BaseJsonResource`. Use `@InjectParam` for dependencies. jersey-bootstrap is set up to use a `SingletonFactory` in `RunServer`when doing DI, so that you never end up with more than one instance of any resource. Example
 
@@ -191,10 +197,10 @@ serializes back to a browser as
     }
 
 
-## Internal Service Classes ##
+### Internal Service Classes ###
 a.k.a. service beans, DAO classes, resources, providers, etc.
 
-### class construction ###
+#### class construction ####
 
 Annotate classes with `@Provider` that are not going to be serving JSON HTTP requests. The following example assumes something like a three-tiered architecture (controllers, services, DAOs), but is strictly for illustration.
 
@@ -215,6 +221,29 @@ Annotate classes with `@Provider` that are not going to be serving JSON HTTP req
 Note that jersey's built-in dependency injection mechanic is primitive and does not support
 circular dependency injection like Spring.
 
+
+### External Configuration ###
+In your application code, look up configuration through system properties. Don't use main(String[] **arguments**).
+Why? Here's just a few reasons:
+
+ - order is NOT important with system properties as they are with arguments
+   * Some developer haphazardly shuffles the order of the arguments of a main method. Now all your automation and
+     deployment scripts are broken.
+ - `-DmyApp.thread_pool.max_size=16` is much more expressive and documented than `16`
+ - The given `DynamicPropsWeb` JSON resource already gives you a straightforward, minimal way to inspect (and change)
+   configuration.
+
+On top of that, this bootstrap includes my property lookup-easing library called
+[props-live](https://github.com/dirkraft/props-live). It gives you some convenient parsing functions (e.g. getString,
+getDouble, ...) as well as property change notification. Jetty itself can be triggered to restart on certain property
+changes.
+
+ - `jetty.port` : change the port jetty is listening on
+ - `jetty.restart` : post any value to this property to trigger a jetty restart. Useful if you've changed some other
+   properties and would prefer to reinitialize the whole application.
+ - `base.static_dirs` : change the location of static files
+
+
 - - - - - - - - - -
 
 ### Hot Coding ###
@@ -231,6 +260,18 @@ hot code through various servlet containers like JBoss or Tomcat. Outside of ser
 very good [JRebel](http://zeroturnaround.com/software/jrebel/) which apparently has strong IntelliJ support. In short,
 since this isn't a WAR, and if you don't have JRebel, then you won't be able to hotcode. This has not been a problem
 for me, because restarting the app takes about 3 seconds.
+
+
+
+
+
+Deployment
+----------
+haha. ha.
+
+ - build `gradle fatJar`
+ - copy the jar from build/libs/your-fat.jar to your production servers
+ - java [-D system properties] -jar your-fat.jar
 
 
 
