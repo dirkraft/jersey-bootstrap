@@ -43,10 +43,27 @@ $.fn.serializeObject = function()
     return o;
 };
 
-function defaultAjaxError(jqXHR, textStatus, errorThrown) {
+// default $.ajax error function
+$(document).ajaxError(function(event, jqXHR, ajaxSettings, thrownError) {
     var exception = JSON.parse(jqXHR.responseText);
     var exceptMsg = exception.message && exception.message.trim();
     var message = jqXHR.status + ':' + (exceptMsg ? exceptMsg : 'see console log');
     console.log(jqXHR.responseText);
     alert(message);
-}
+});
+
+// html includes
+$(function() {
+
+    $('template').each(function (idx, el) {
+        var tplHref = $(el).text().trim();
+        $.ajax({
+            url: tplHref,
+            success: function(data, textStatus, jqXHR) {
+                $(el).before(data);
+                $(el).remove();
+            }
+        });
+    });
+
+});
