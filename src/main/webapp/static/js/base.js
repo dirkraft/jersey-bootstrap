@@ -1,3 +1,11 @@
+Object.prototype.keys = function () {
+    var keys = [];
+    for(var i in this) if (this.hasOwnProperty(i)) {
+        keys.push(i);
+    }
+    return keys;
+};
+
 String.prototype.format = function() {
     var args = arguments;
     return this.replace(/{(\d+)}/g, function(match, number) {
@@ -6,26 +14,47 @@ String.prototype.format = function() {
 };
 
 /**
- * Logs a warning if the condition is false (an assertion fails).
- *
- * @param {boolean} condition
- * @param {String} failMessage
- */
+* Logs a warning if the condition is false (an assertion fails).
+*
+* @param {boolean} condition
+* @param {String} failMessage
+*/
 function assertSoft(condition, failMessage) {
     if (!condition) {
         console.log(failMessage);
     }
 }
-function lockForms(containerEl) {
-    containerEl = containerEl || $('body');
-    $(containerEl).find('input:not(.disabled),button:not(.disabled)').attr('disabled', 'disabled');
+
+
+/**
+* @param control may be any type which is accepted by jQuery's $( ... )
+*/
+function lockControl(control) {
+    $(control).attr('disabled', 'disabled');
+}
+/**
+* @param container may be any type which is accepted by jQuery's $( ... )
+*/
+function lockForms(container) {
+    container = container || $('body');
+    $(container).find('input:not(.disabled),button:not(.disabled),select:not(.disabled)').attr('disabled', 'disabled');
 }
 
-function unlockForms(containerEl) {
-    containerEl = containerEl || $('body');
-    $(containerEl).find('input:not(.disabled),button:not(.disabled)').removeAttr('disabled');
+/**
+* @param control may be any type which is accepted by jQuery's $( ... )
+*/
+function unlockControl(control) {
+    $(control).removeAttr('disabled');
+}
+/**
+* @param container may be any type which is accepted by jQuery's $( ... )
+*/
+function unlockForms(container) {
+    container = container || $('body');
+    $(container).find('input:not(.disabled),button:not(.disabled),select:not(.disabled)').removeAttr('disabled');
 }
 
+/** turn a form into a js object */
 $.fn.serializeObject = function()
 {
     var o = {};
@@ -45,25 +74,20 @@ $.fn.serializeObject = function()
 
 // default $.ajax error function
 $(document).ajaxError(function(event, jqXHR, ajaxSettings, thrownError) {
-    var exception = JSON.parse(jqXHR.responseText);
-    var exceptMsg = exception.message && exception.message.trim();
+    var exception, exceptMsg;
+    if (jqXHR.responseText) {
+        try {
+            exception = JSON.parse(jqXHR.responseText);
+        } catch (error) {
+            exception = jqXHR.responseText
+        }
+        exceptMsg = exception.message && exception.message.trim();
+    }
     var message = jqXHR.status + ':' + (exceptMsg ? exceptMsg : 'see console log');
     console.log(jqXHR.responseText);
-    alert(message);
 });
 
-// html includes
-$(function() {
-
-    $('template').each(function (idx, el) {
-        var tplHref = $(el).text().trim();
-        $.ajax({
-            url: tplHref,
-            success: function(data, textStatus, jqXHR) {
-                $(el).before(data);
-                $(el).remove();
-            }
-        });
-    });
-
-});
+/** poor man's html escape */
+function escapeHtml(text) {
+    return $('<div/>').text(text).html();
+}

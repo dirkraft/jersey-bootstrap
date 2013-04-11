@@ -1,6 +1,7 @@
 YUIUtil = {
     /**
      * @param {Element} el any element presumably contained within a YUI Datatable row.
+     * @return record id, e.g. 'model_1'
      */
     findModel: function(el) {
         return $(el).closest('[data-yui3-record]').attr('data-yui3-record');
@@ -31,3 +32,13 @@ YUIUtil = {
         }
     }
 };
+
+YUI().use('datatype-date', function(Y) {
+    /**
+     * @param {Object} o as given to column formatter
+     * @return {String} formatted date string
+     */
+    YUIUtil.formatDate = function(o) {
+        return o.value ? Y.Date.parse(o.value).toLocaleString() : null;
+    }
+});

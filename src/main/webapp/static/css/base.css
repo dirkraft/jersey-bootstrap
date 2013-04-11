@@ -1,3 +1,44 @@
+/* font-awesome is a font, so prevent underlining in links */
+a [class^=icon-]:hover {
+    text-decoration: none;
+}
+
 template {
     display: none;
+}
+
+/* when mashing the borders of two inputs together, eliminate the gap */
+.input-append+.input-prepend {
+    margin-left: -1px;
+}
+
+.row-fluid {
+    border-radius: 5px;
+    margin-left: -5px;
+    padding-left: 5px;
+}
+.row-fluid:nth-child(odd) {
+    background-color: #f5f5f5;
+}
+
+.row-fluid.mockup {
+    background-color: #ddffdd; /* one of the 35 'BlackLocus greens' */
+    opacity: .5;
+}
+.watermark {
+    position: absolute;
+    font-size: 3em;
+    width: 100%;
+    text-align: center;
+    z-index: 1000;
+}
+
+/* apply to container to create "scroll space" usually at the bottom for #anchor links */
+.scrollspace {
+    position: absolute;
+    display: table;
+    height: 100%;
+}
+.scrollspace:after {
+    content: "";
 }
