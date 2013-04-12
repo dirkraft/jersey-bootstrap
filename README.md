@@ -1,8 +1,3 @@
-WORK IN PROGRESS
-================
-Not yet ready for primetime.
-
-
 Jersey Bootstrap
 ================
 also known as "Texas Bootstrap" and "Double Bootstrap Rainbow".
@@ -145,56 +140,66 @@ a.k.a. controllers, web resources, web endpoints, REST services, etc.
 
 If you want something serialized to and from UTF-8 json, make your `@Path` annotated classes extend `BaseJsonResource`. Use `@InjectParam` for dependencies. jersey-bootstrap is set up to use a `SingletonFactory` in `RunServer`when doing DI, so that you never end up with more than one instance of any resource. Example
 
-    @Path("/sardines")
-    public class SardinesWeb extends BaseJsonResource {
-        
-        private final SardinesService sardinesService;
-        
-        public SardinesWeb(@InjectParam SardinesService sardinesService) {
-            this.sardinesService = sardinesService;
-        }
-        
-        @Path("count")
-        public int countSardines() {
-            return sardineService.getTotalSardines();
-        }
-        
-        @Path("{id}")
-        public Sardine getSardine(@PathParam("id") String id) {
-            return sardineService.findById(id);
-        }
+```java
+@Path("/sardines")
+public class SardinesWeb extends BaseJsonResource {
+
+    private final SardinesService sardinesService;
+
+    public SardinesWeb(@InjectParam SardinesService sardinesService) {
+        this.sardinesService = sardinesService;
     }
+
+    @Path("count")
+    public int countSardines() {
+        return sardineService.getTotalSardines();
+    }
+
+    @Path("{id}")
+    public Sardine getSardine(@PathParam("id") String id) {
+        return sardineService.findById(id);
+    }
+}
+```
 
 
 Check out `DefaultObjectMapper` for the Jackson serialization config, and modify if necessary though I encourage you to leave it as is. As that configuration stands, one way you might deal with requests and responses might be with simple POJOs like so...
 
 #### sample request deserialization ####
-    
-    {
-        "searchTerms": "neon bananas",
-        "maxResultSetSize" : 10
-    }
+
+```java
+{
+    "searchTerms": "neon bananas",
+    "maxResultSetSize" : 10
+}
+```
 
 deserializes from a browser into
 
-    class ThingReq {
-        public String searchTerms; // == "neon bananas"
-        public Integer maxResultSetSize; // == 10
-    }
+```java
+class ThingReq {
+    public String searchTerms; // == "neon bananas"
+    public Integer maxResultSetSize; // == 10
+}
+```
 
 #### sample response serialization ####
-    
-    class SearchSummaryRes {
-        public List<SearchResultRes> results; // == empty list
-        public Integer numResults; // == 0
-    }
+
+```java
+class SearchSummaryRes {
+    public List<SearchResultRes> results; // == empty list
+    public Integer numResults; // == 0
+}
+```
 
 serializes back to a browser as
 
-    {
-        "results": [],
-        "numResults": 0
-    }
+```java
+{
+    "results": [],
+    "numResults": 0
+}
+```
 
 
 ### Internal Service Classes ###
@@ -204,19 +209,21 @@ a.k.a. service beans, DAO classes, resources, providers, etc.
 
 Annotate classes with `@Provider` that are not going to be serving JSON HTTP requests. The following example assumes something like a three-tiered architecture (controllers, services, DAOs), but is strictly for illustration.
 
-    @Provider
-    public class SardinesService {
-        
-        private final SardineDao sardineDao;
-        
-        public SardinesService(@InjectParam SardineDaoRedis sardineDaoRedis) {
-            // Assume SardineDaoRedis is a redis implementation of SardineDao interface.
-            // Caution that jersey's built-in DI mechanic would not be able to resolve
-            // that there is one implementor of SardineDao. So the constructor argument here
-            // explicitly types to SardineDaoRedis.
-            this.sardineDao = sardineDao;
-        }
+```java
+@Provider
+public class SardinesService {
+
+    private final SardineDao sardineDao;
+
+    public SardinesService(@InjectParam SardineDaoRedis sardineDaoRedis) {
+        // Assume SardineDaoRedis is a redis implementation of SardineDao interface.
+        // Caution that jersey's built-in DI mechanic would not be able to resolve
+        // that there is one implementor of SardineDao. So the constructor argument here
+        // explicitly types to SardineDaoRedis.
+        this.sardineDao = sardineDao;
     }
+}
+```
 
 Note that jersey's built-in dependency injection mechanic is primitive and does not support
 circular dependency injection like Spring.
