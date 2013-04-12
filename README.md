@@ -167,7 +167,7 @@ Check out `DefaultObjectMapper` for the Jackson serialization config, and modify
 
 #### sample request deserialization ####
 
-```java
+```javascript
 {
     "searchTerms": "neon bananas",
     "maxResultSetSize" : 10
@@ -194,7 +194,7 @@ class SearchSummaryRes {
 
 serializes back to a browser as
 
-```java
+```javascript
 {
     "results": [],
     "numResults": 0
