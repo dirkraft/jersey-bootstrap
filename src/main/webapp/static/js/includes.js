@@ -1,5 +1,5 @@
 /**
- * html includes via <template>include/file.html</template>
+ * html includes via <include>include/file.html</include>
  *
  * Invoke after all template tags. Accepts a callback function for things dependent on template initialization.
  *
@@ -16,7 +16,7 @@ function loadTemplates(fnCallback) {
         }
     };
 
-    $('template').each(function (idx, el) {
+    $('include').each(function (idx, el) {
         ++numTemplates;
         var tplHref = $(el).html().trim();
         if (tplHref.length > 0) {

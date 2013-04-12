@@ -251,6 +251,36 @@ changes.
  - `base.static_dirs` : change the location of static files
 
 
+### Client-side Templating ###
+Wait, you took away my PHP-style JSP's!
+
+I don't really like templating languages, but *includes* themselves are a simple and powerful concept. I've included
+a browser-side utility for achieving includes which suits my needs. Unfortunately because it is client-side, page loads
+can feel like regurgitating kittens, but this has not annoyed me nearly enough to opt for a full-blown templating
+engine.
+
+One such example lives in the sample `index.html`
+
+```html
+<script type="text/javascript" src="js/templates.js"></script>
+
+<include>include/navigation.html</include>
+
+<div>
+    content
+</div>
+
+<script type="text/javascript">
+loadTemplates(); // optionally takes a callback after loading all template content
+</script>
+
+```
+
+A pretty simple answer to 'page flow' concerns would be to introduce an *html compile* step to unroll all
+such `<include>` tags. Some of the pros out there already compile their html and css (wtf?). It's really not
+far-fetched to have such a *productionizing* step.
+
+
 - - - - - - - - - -
 
 ### Hot Coding ###
