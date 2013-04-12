@@ -5,7 +5,7 @@
         </encoder>
     </appender>
     <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>/tmp/jerseybootstrap/log</file>
+        <file>/tmp/∏/log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <!-- rollover daily -->
             <fileNamePattern>/tmp/jersey-bootstrap/%d{yyyy-MM-dd HH-mm}.log.gz</fileNamePattern>
@@ -22,7 +22,7 @@
 
     <logger name="com.github.dirkraft" level="DEBUG" />
 
-    <root level="ERROR"><!-- default level -->
+    <root level="WARN"><!-- default level -->
         <appender-ref ref="STDOUT" />
         <appender-ref ref="FILE" />
     </root>
