@@ -262,7 +262,7 @@ engine.
 One such example lives in the sample `index.html`
 
 ```html
-<script type="text/javascript" src="js/templates.js"></script>
+<script type="text/javascript" src="js/includes.js"></script>
 
 <include>include/navigation.html</include>
 
@@ -271,7 +271,7 @@ One such example lives in the sample `index.html`
 </div>
 
 <script type="text/javascript">
-loadTemplates(); // optionally takes a callback after loading all template content
+loadIncludes(); // optionally takes a callback after loading all template content
 </script>
 
 ```

@@ -1,34 +1,34 @@
 /**
  * html includes via <include>include/file.html</include>
  *
- * Invoke after all template tags. Accepts a callback function for things dependent on template initialization.
+ * Invoke after all include tags. Accepts a callback function for things dependent on include initialization.
  *
- * @param {Function} fnCallback (optional) called after all template requests have completed (whether or not they failed)
+ * @param {Function} fnCallback (optional) called after all include requests have completed (whether or not they failed)
  */
-function loadTemplates(fnCallback) {
+function loadIncludes(fnCallback) {
 
     fnCallback = fnCallback || function(){}; // optional param
 
-    var numTemplates = 0;
+    var numIncludes = 0;
     var atTheEnd = function() {
-        if (numTemplates == 0) {
+        if (numIncludes == 0) {
             fnCallback();
         }
     };
 
     $('include').each(function (idx, el) {
-        ++numTemplates;
-        var tplHref = $(el).html().trim();
-        if (tplHref.length > 0) {
-            console.log('loading <template>' + tplHref + '</template>');
+        ++numIncludes;
+        var inclHref = $(el).html().trim();
+        if (inclHref.length > 0) {
+            console.log('loading <include>' + inclHref + '</include>');
             $.ajax({
-                url: tplHref,
+                url: inclHref,
                 success: function(data, textStatus, jqXHR) {
                     $(el).before(data);
                     $(el).remove();
                 },
                 complete: function(jqXHR, textStatus) {
-                    --numTemplates;
+                    --numIncludes;
                     atTheEnd();
                 }
             });
