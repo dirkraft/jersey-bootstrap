@@ -20,6 +20,7 @@
         </encoder>
     </appender>
 
+    <logger name="org.eclipse.jetty" level="INFO" />
     <logger name="com.github.dirkraft" level="DEBUG" />
 
     <root level="WARN"><!-- default level -->
