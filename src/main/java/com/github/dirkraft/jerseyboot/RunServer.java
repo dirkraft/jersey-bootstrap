@@ -131,7 +131,7 @@ public class RunServer {
             }
             webApp.setBaseResource(staticResources);
 
-            SERVER = new Server(propSet.getInt(PROP_JETTY_PORT, DEF_JETTY_PORT));
+            SERVER = new Server(propSet.getInt(PROP_JETTY_PORT));
             SERVER.setHandler(webApp);
             SERVER.start();
             SERVER.join(); // blocks
