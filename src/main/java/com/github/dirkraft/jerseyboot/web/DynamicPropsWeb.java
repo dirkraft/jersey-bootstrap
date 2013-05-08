@@ -8,6 +8,7 @@ import com.github.dirkraft.propslive.set.ease.PropSetAsMap;
 import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
 import com.google.common.collect.Maps;
+import org.apache.commons.lang3.StringUtils;
 
 import javax.annotation.Nullable;
 import javax.ws.rs.GET;
@@ -29,11 +30,11 @@ import static org.apache.commons.lang3.BooleanUtils.isTrue;
 public class DynamicPropsWeb extends BaseJsonResource implements PropListener<String> {
 
     /**
-     * System property that gives regex of properties to exclude from {@link #getProps(Boolean)} when passed
+     * System property that gives regex of properties to exclude from {@link #getProps(Boolean, String)} when passed
      * <code>false</code>. Defaults to <code>{@value #DEF_PROP_IGNORE_RGX}</code>.
      */
     public static final String PROP_PROP_IGNORE_RGX = "base.web.props.ignore";
-    public static final String DEF_PROP_IGNORE_RGX = "^(" +
+    private static final String DEF_PROP_IGNORE_RGX = "^(" +
             "((awt|file|ftp|http|idea|java|line|os|path|sun|user)\\.)" +
             "|gopherProxySet|socksNonProxyHosts" +
             ").*$";
@@ -51,7 +52,7 @@ public class DynamicPropsWeb extends BaseJsonResource implements PropListener<St
     };
 
     public DynamicPropsWeb() {
-        this.internalPropKeysRgx = $.to(this).getString(PROP_PROP_IGNORE_RGX, DEF_PROP_IGNORE_RGX);
+        this.internalPropKeysRgx = $.to(this).getString(PROP_PROP_IGNORE_RGX);
     }
 
     public DynamicPropsWeb(String internalPropKeysRgx) {
@@ -59,11 +60,20 @@ public class DynamicPropsWeb extends BaseJsonResource implements PropListener<St
     }
 
     /**
-     * @param showInternal when true will show properties otherwise filtered by {@link #internalPropKeysRgx}
+     * @param includeHidden when true will show properties otherwise filtered by {@link #internalPropKeysRgx}
      */
     @GET
-    public Map<String, String> getProps(@QueryParam(value = "showInternal") Boolean showInternal) {
-        return new TreeMap<>(Maps.filterKeys($.asMap(), isTrue(showInternal) ? Predicates.<String>alwaysTrue() : notInternalPropKeys));
+    public Map<String, String> getProps(@QueryParam(value = "includeHidden") Boolean includeHidden,
+                                        @QueryParam(value = "filter") final String filterPattern) {
+        Predicate<String> filter = isTrue(includeHidden) ? Predicates.<String>alwaysTrue() : notInternalPropKeys;
+        if (StringUtils.isNotBlank(filterPattern)) {
+            filter = Predicates.and(filter, new Predicate<String>() {
+                public boolean apply(String input) {
+                    return input.matches(filterPattern);
+                }
+            });
+        }
+        return new TreeMap<>(Maps.filterKeys($.asMap(), filter));
     }
 
     /**
