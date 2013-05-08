@@ -22,7 +22,7 @@ include {
 }
 
 .row-fluid.mockup {
-    background-color: #ddffdd; /* one of the 35 'BlackLocus greens' */
+    background-color: #ddffdd;
     opacity: .5;
 }
 .watermark {
