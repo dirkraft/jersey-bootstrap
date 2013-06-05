@@ -391,8 +391,3 @@ specifically labelled was originally written by me, though you might never know 
 
 
 
-
-
-TO DO
------
-Client-side "templating" in Javascript, because I don't want any server-side rendering.
