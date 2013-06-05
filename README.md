@@ -9,6 +9,29 @@ I apologize for using the F-word (f----work). It will not happen again.
 
 
 
+Quickstart Development
+----------------------
+
+This is oriented towards IntelliJ.
+
+    git clone https://github.com/dirkraft/jersey-bootstrap.git
+    cd jersey-bootstrap
+    gradle idea
+
+  * Create a run configuration on `RunServer.main` with VM options `-Dbase.static_dirs=src/main/webapp/static/` and run it.
+
+  * Navigate to [localhost:8080](localhost:8080) in your browser. You should be redirected to `index.html`. This is an
+    example of static content.
+
+  * Navigate to the sample HTTP JSON resource: `DynamicPropsWeb.java` at [localhost:8080/_sys/props](localhost:8080/_sys/props).
+    This is an example of a HTTP JSON Resource.
+
+  * Get to it! Follow [Bootstrappin'](#bootstrappin) instructions and delete anything you don't care about with the
+    [File Matrix](#file-matrix) guide.
+
+
+
+
 * * * * * *
 
 
