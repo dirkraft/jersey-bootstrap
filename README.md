@@ -4,7 +4,6 @@ also known as "Texas Bootstrap" and "Double Bootstrap Rainbow".
 
 This project exists solely to be shamelessly cloned, forked, gutted, deleted, and so on because bootstrapping a Java
 web application is of the smaller varieties of fun. *This repo itself is not a new framework*, though it is based on a lightly configured [Jersey](http://jersey.java.net/).
-
 I apologize for using the F-word (f----work). It will not happen again.
 
 
@@ -40,16 +39,10 @@ This is oriented towards IntelliJ.
 
 "Features"
 ----------
-Here's what you get regardless of what you want.
-
-# Stuff. #
-
-But really, you got a bunch because the truth is
+A bunch of bootstrappy stuff is included by default, because
 ### It is easy and fun to delete stuff. ###
-It is less fun to track down disparate dependencies. Once long ago I made Unreal Tournament levels and (at that young
-age) was blown away by the seemingly upside-down concept of the level editor: you don't *add* objects to an empty
-world; you carve out rooms (*subtract*) from an entirely solid world. After subtracting out space for the general flow
-of the level, THEN you would add in the details, static meshes and whatnot.
+It is less fun to track down disparate dependencies. Get the whole cow. Cut out the tenderloin. Throw the rest away.
+America.
 
 
 #### You get the following server-side things ####
