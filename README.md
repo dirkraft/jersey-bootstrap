@@ -1,3 +1,6 @@
+Kept up for reference, but I've given up on web framework for the time being. They make me want to quit coding. I encourage you to check out [codahale's Dropwizard](http://dropwizard.codahale.com/) which has gross overlap in motivation and technology choices, which to me might make it *the only* viable Java AJAX framework worth looking at.
+
+
 Jersey Bootstrap
 ================
 also known as "Texas Bootstrap" and "Double Bootstrap Rainbow".
